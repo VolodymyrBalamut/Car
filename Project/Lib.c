@@ -123,7 +123,7 @@ void KeyPress(int key)
 void Initialization(void)
 {
 	GPIOInitialization();
-	//TimerInitialization();
+	TimerInitialization();
 }
 
 void GPIOInitialization(void)

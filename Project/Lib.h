@@ -5,7 +5,7 @@
 #include "misc.h"						// Framework
 
 #define FrequencyDivider 8000;				
-#define InterruptionPeriod 1;				
+#define InterruptionPeriod 1000;				//1 time per second
 #define OutputPorts GPIO_Pin_14;
 #define InputPorts GPIO_Pin_12;
 
