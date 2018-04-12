@@ -1,49 +1,43 @@
 #include "Lib.h"
-int step = 0;
-int count = 0;
-void TIM4_IRQHandler(void)
+int TIM_Pulse = 10;
+
+void TIM2_IRQHandler(void)
 {
 		
-		if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
+		if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 		{
-			TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-			//KeyPress(GetKey());
-			if(step == 0) EngineAllForward();
-			if(step == 1) EngineAllBack();
-			if(step == 2) EngineAllStop();
-			
-			//refresh
-			if(++count == 5){ // 5 sec
-				if(++step == 3){
-					step = 0;
-				}
-				count = 0;
-			}
+			TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+			KeyPress(GetKey());
 		}
+}
+int step = 0;
+void TIM3_IRQHandler(void)
+{
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+  {
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+			if(step == 0) EngineAllForward(TIM_Pulse);
+			if(step == 1) EngineAllBack(TIM_Pulse);
+			if(step == 2) EngineAllStop();
+			if(step == 3) EngineRightForward(TIM_Pulse);
+			if(step == 4) EngineLeftForward(TIM_Pulse);
+			if(step == 5) EngineRightBack(TIM_Pulse);
+			if(step == 6) EngineLeftBack(TIM_Pulse);
+			if(++step == 7) step = 0;
+		if (TIM_Pulse < PWM_TIM_Period) TIM_Pulse+=10;
+		else TIM_Pulse = 1;
+	}
 }
 
 int main(void)
 {
 	Initialization();
 	
-	int i;
 	
 	while(1)
 	{
-		/*Delay(10000000);
-		EngineAllStop();
-		Delay(10000000);
-		EngineAllForward();
-		Delay(10000000);
-		EngineAllBack();
-		Delay(10000000);
-		EngineRightForward();
-		Delay(10000000);
-		EngineLeftForward();
-		Delay(10000000);
-		EngineRightBack();
-		Delay(10000000);
-		EngineLeftBack();*/
-		;
+    /*if (TIM_Pulse < PWM_TIM_Period) TIM_Pulse++;
+		else TIM_Pulse = 1;
+	  Delay(1000000); */
 	}
 }
